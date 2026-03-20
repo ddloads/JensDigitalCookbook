@@ -1,0 +1,18 @@
+version: "3.9"
+
+services:
+  cookbook:
+    build: .
+    container_name: jens-cookbook
+    restart: unless-stopped
+    ports:
+      - "3001:3001"       # Change left side to use a different host port e.g. "8080:3001"
+    volumes:
+      - cookbook-db:/app/backend/cookbook.db
+      - cookbook-uploads:/app/backend/uploads
+    environment:
+      - PORT=3001
+
+volumes:
+  cookbook-db:
+  cookbook-uploads:
