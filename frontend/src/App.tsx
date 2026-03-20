@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Plus, Search, Filter, BookOpen, Clock, Users, Trash2, ChevronRight, Edit2, X, Check, Settings as SettingsIcon, Star } from 'lucide-react'
+import { Plus, Search, BookOpen, Clock, Users, Trash2, Edit2, X, Check, Settings as SettingsIcon, Star } from 'lucide-react'
 import './App.css'
 import type { Category, Recipe } from './types'
 
