@@ -8,21 +8,24 @@ RUN npm run build
 
 # Stage 2: Production image
 FROM node:20-alpine
-WORKDIR /app
 
-# Install backend dependencies
-COPY backend/package*.json ./backend/
-RUN cd backend && npm ci
+# Working dir is the backend so relative paths (multer uploads) resolve correctly
+WORKDIR /app/backend
+
+# Install backend dependencies (includes tsx)
+COPY backend/package*.json ./
+RUN npm ci
 
 # Copy backend source
-COPY backend/ ./backend/
+COPY backend/src ./src
+COPY backend/tsconfig.json ./
 
 # Copy built frontend from stage 1
-COPY --from=frontend-builder /app/frontend/dist ./frontend/dist
+COPY --from=frontend-builder /app/frontend/dist /app/frontend/dist
 
-# Persistent data lives here (mounted as Docker volumes)
-RUN mkdir -p /app/backend/uploads
+# Create uploads directory for persistent image storage
+RUN mkdir -p uploads
 
 EXPOSE 3001
 
-CMD ["node", "--import", "tsx/esm", "/app/backend/src/index.ts"]
+CMD ["./node_modules/.bin/tsx", "src/index.ts"]
