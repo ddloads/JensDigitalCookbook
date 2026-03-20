@@ -7,14 +7,14 @@ COPY frontend/ ./
 RUN npm run build
 
 # Stage 2: Production image
-# Use full Debian-based image — has Python/make/g++ needed for sqlite3
 FROM node:20
 
 WORKDIR /app/backend
 
-# Install backend dependencies (npm install instead of ci — avoids Windows lock file platform issues)
+# Install backend deps and force sqlite3 to compile from source
+# so it links against this container's GLIBC instead of a prebuilt binary
 COPY backend/package.json ./
-RUN npm install
+RUN npm install --build-from-source=sqlite3
 
 # Copy backend source
 COPY backend/src ./src
