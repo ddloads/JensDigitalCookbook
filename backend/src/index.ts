@@ -256,7 +256,7 @@ app.post('/api/seed', async (req, res, next) => {
 });
 
 // SPA fallback — must be after all API routes
-app.get('*', (req, res) => {
+app.get(/.*/, (req, res) => {
   res.sendFile(path.join(__dirname, '../../frontend/dist/index.html'));
 });
 
