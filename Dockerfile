@@ -1,8 +1,8 @@
 # Stage 1: Build the React frontend
 FROM node:20-slim AS frontend-builder
 WORKDIR /app/frontend
-COPY frontend/package*.json ./
-RUN npm ci
+COPY frontend/package.json ./
+RUN npm install
 COPY frontend/ ./
 RUN npm run build
 
@@ -12,9 +12,9 @@ FROM node:20
 
 WORKDIR /app/backend
 
-# Install backend dependencies (sqlite3 compiles natively here)
-COPY backend/package*.json ./
-RUN npm ci
+# Install backend dependencies (npm install instead of ci — avoids Windows lock file platform issues)
+COPY backend/package.json ./
+RUN npm install
 
 # Copy backend source
 COPY backend/src ./src
